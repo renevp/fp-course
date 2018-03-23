@@ -75,8 +75,9 @@ headOr ::
   a
   -> List a
   -> a
-headOr =
-  error "todo: Course.List#headOr"
+headOr _ (b :. _ ) = b
+headOr a Nil = a
+  -- error "todo: Course.List#headOr"
 
 -- | The product of the elements of a list.
 --
@@ -91,8 +92,9 @@ headOr =
 product ::
   List Int
   -> Int
-product =
-  error "todo: Course.List#product"
+product Nil = 1
+product (x :. xs) = x * product xs
+  -- error "todo: Course.List#product"
 
 -- | Sum the elements of the list.
 --
@@ -106,8 +108,9 @@ product =
 sum ::
   List Int
   -> Int
-sum =
-  error "todo: Course.List#sum"
+sum Nil = 0
+sum (x :. xs) = x + sum xs
+  -- error "todo: Course.List#sum"
 
 -- | Return the length of the list.
 --
@@ -118,8 +121,9 @@ sum =
 length ::
   List a
   -> Int
-length =
-  error "todo: Course.List#length"
+length Nil = 0
+length (_ :. xs) = 1 + length xs
+  -- error "todo: Course.List#length"
 
 -- | Map the given function on each element of the list.
 --
@@ -133,8 +137,18 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map =
-  error "todo: Course.List#map"
+map f xs =  foldRight (\a bs -> (f a) :. bs) Nil xs
+
+
+xxx ::
+  (a -> b)
+  -> List a
+  -> List b
+xxx f xs =  foldLeft (\bs a -> (f a) :. bs) Nil xs
+
+-- 1 :. 2 :. 3
+
+  -- error "todo: Course.List#map"
 
 -- | Return elements satisfying the given predicate.
 --
@@ -150,8 +164,14 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter =
-  error "todo: Course.List#filter"
+filter _ Nil = Nil
+filter p (x:.xs) =
+  if p x
+    then
+      x :. filter p xs
+    else
+      filter p xs
+  -- error "todo: Course.List#filter"
 
 -- | Append two lists to a new list.
 --
@@ -169,8 +189,8 @@ filter =
   List a
   -> List a
   -> List a
-(++) =
-  error "todo: Course.List#(++)"
+(++) as bs =
+     foldRight (\a as' -> a :. as') bs as
 
 infixr 5 ++
 
@@ -219,7 +239,7 @@ flattenAgain =
 
 -- | Convert a list of optional values to an optional list of values.
 --
--- * If the list contains all `Full` values, 
+-- * If the list contains all `Full` values,
 -- then return `Full` list of values.
 --
 -- * If the list contains one or more `Empty` values,
