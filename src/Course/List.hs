@@ -225,7 +225,7 @@ flatMap ::
   (a -> List b)
   -> List a
   -> List b
-flatMap f as = flatten $ map f as 
+flatMap f as = flatten $ map f as
   -- error "todo: Course.List#flatMap"
 
 -- | Flatten a list of lists to a list (again).
@@ -322,8 +322,8 @@ lengthGT4 =
 reverse ::
   List a
   -> List a
-reverse =
-  error "todo: Course.List#reverse"
+reverse xs = foldLeft (\bs a -> a :. bs) Nil xs 
+  -- error "todo: Course.List#reverse"
 
 -- | Produce an infinite `List` that seeds with the given value at its head,
 -- then runs the given function for subsequent elements
